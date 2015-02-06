@@ -1,0 +1,23 @@
+%!TEX root = /Users/stwaidele/Dropbox (Leisinger)/02 - AKAD/Projektbericht/Möglichkeiten der Digitalen Kontaktaufnahme im Endkundenbereich/vorlage.tex
+
+%% Definition for Codeschnipsel im Fließtext
+\newcommand{\code}{\texttt}
+% \newcommand{\buzz}{\textit}
+\newcommand{\buzz}{\textit}
+
+\newcommand{\todo}[1]{\fbox{\parbox{\textwidth}{\textbf{To do:} #1}}}
+%\newcommand{\myref}[1]{„\ref{#1}~\nameref{#1}“}
+\newcommand{\myref}[1]{\textit{\ref{#1}~\nameref{#1}}}
+
+
+%% Für Codeblöcke mit Syntax-Highlighting
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/minted/
+\usepackage{minted}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+
+%% Feste Spaltenbreite
+%% http://de.wikibooks.org/wiki/LaTeX-W%C3%B6rterbuch:_tabular
+\usepackage{tabularx}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}} % linksbündig mit Breitenangabe
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}} % zentriert mit Breitenangabe
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}} % rechtsbündig mit Breitenangabe
