@@ -6,6 +6,14 @@
 \subsection{Erzeuger–Verbraucher—Muster} % (fold)
 \label{sub:erzeuger_verbraucher_muster}
 
+Bei Erzeuger–Verbraucher–Konstellationen treten Produzenten und Konsumenten miteinander über eine Warteschlange bzw. einen Buffer miteinander in Kontakt.
+Hierbei ist es unerheblich, was hierbei erzeugt bzw. verbraucht wird. Es kann sich um reale Güter handeln, die von Kunden nachgefragt werden, oder auch um Informationen, die Abgerufen werden. Ebenfalls ist es unerheblich, ob der Erzeuger tatsächlich den Bedarf des Verbrauchers befriedigt, oder ob Anfragen erzeugt werden, die dann vom Verbraucher abgearbeitet bzw. gelöst werden.\footnote{Ein Beispiel hierfür ist z.B. ein Trouble–Ticket–System: Hier werden vom Nutzer Supportanfragen „erzeugt“, die dann von den Supportmitarbeitern „verbraucht” werden.} 
+Auch können die Anzahl der Erzeuger und die der Verbraucher beliebig gewählt werden oder sogar schwanken. Allen Situationen ist jedoch gemeinsam, dass das Erzeugnis nur einem Verbraucher zur Verfügung steht und nur ein mal konsumiert werden kann.
+
+Durch das einfügen eines Buffers stellen Erzeuger–Verbraucher–Konstellationen einen Mechanismus dar, 
+durch den eine beliebige Anzahl von Produzenten und Verbraucher miteinander kommunizieren können.
+Es handelt es sich somit um ein Entuwrfsmuster, welches in der Programmierung von nebenläufigen Anwendungen.\footnote{vgl. \cite{openmp}, S. 111} 
+
 % subsection erzeuger_verbraucher_muster (end)
 
 \subsection{Warteschlange} % (fold)
@@ -41,11 +49,6 @@ Schreiben bei voller Queue, Lesen bei leerer Queue
 
 % subsection realisierung_mit_semaphoren_und_mutex (end)
 
-\subsection{Realisierung mit LinkedBlockingQueue} % (fold)
-\label{sub:realisierung_mit_linkedblockingqueue}
-
-% subsection realisierung_mit_linkedblockingqueue (end)
-
 % section erzeuger_und_verbraucher (end)
 
 \newpage
@@ -66,6 +69,11 @@ Schreiben bei voller Queue, Lesen bei leerer Queue
 \label{sub:die_klasse_thread}
 
 % subsection die_klasse_thread (end)
+
+\subsection{Realisierung mit LinkedBlockingQueue} % (fold)
+\label{sub:realisierung_mit_linkedblockingqueue}
+
+% subsection realisierung_mit_linkedblockingqueue (end)
 
 \subsection{Zufall} % (fold)
 \label{sub:zufall}

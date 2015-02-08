@@ -3,24 +3,19 @@
 
 \subsection{Begründung der Problemstellung} % (fold)
 \label{sub:begrundung_der_problemstellung}
+Erzeuger–Verbraucher–Konstellationen sind sowohl in der Wirtschaft als auch in der Informationsverarbeitung sehr häufig zu beobachten und prägen viele alltäglichen Vorgänge. Aufgrund der Vielzahl der zu betrachtenden Parameter, die neben der Anzahl der Erzeuger und Verbraucher auch die jeweilige Produktions- bzw. Verbrauchsgeschwindigkeit und die Lagerkapazität für fertige Erzeugnisse einschließt handelt es sich hierbei trotz ihrer Alltäglichkeit um komplexe Systeme, welche mich rein oberflächlichen Untersuchungen nicht komplett erfasst werden können.
 
 % subsection begrundung_der_problemstellung (end)
 
 \subsection{Ziele dieser Arbeit} % (fold)
 \label{sub:ziele_dieser_arbeit}
-\textbf{Ziel dieser Arbeit ist es, …}
+\textbf{Ziel dieser Arbeit ist es, eine Erzeuger–Verbraucher Anwendung in Java zu entwickeln. Anhand dieser Anwendung sollen die typischen Problemstellungen nebenläufiger Anwendungen diskutiert, sowie das Laufzeitverhalten der erstellten Anwendung beobachtet und erörtert werden.}
 
-Grundlagen in Kapitel~\myref{sec:erzeuger_und_verbraucher} und \myref{sec:genutzte_sprachmerkmale_von_java}.
-Hauptteil in Kapitel~\myref{sec:implementierung} und \myref{sec:laufzeitbetrachtungen}.
+Die zu erstellende Anwendung soll als konkretes Beispiel eine Pizzeria simulieren, die laufend Pizzas herstellt und für Kunden zur Abholung bereit hält. Mehrere Verbraucher entnehmen in zufälligen Intervallen Pizzas aus diesem Vorrat. Hierbei werden sowohl der Erzeuger als auch jeder Verbraucher in einem jeweils eigenen Threads simuliert.  Es ist darauf zu achten, dass kein Kunde eine Pizza aus einem leeren Vorratsspeicher entnehmen kann. Ebenfalls kann der Pizzabäcker keine weitere Pizza in einen bereits vollen Vorratsspeicher hinzufügen. Sowohl beim Einstellen als bei der Abholung soll zur Dokumentation des Laufzeitverhaltens \ac{E} bzw. \ac{V} sowie die in der Warteschlange bzw. \ac{Q} befindliche Anzahl der Pizzen bzw. Produkte (P)\acronymused{P} ausgegeben werden.
+
+Zunächst werden hierzu in den Kapitel~\myref{sec:erzeuger_und_verbraucher} und \myref{sec:genutzte_sprachmerkmale_von_java} durch Literaturrecherche die Grundlagen der Problemstellung sowie die notwendigen Werkzeuge der Programmiersprache herausgearbeitet. Anschließend wird in Kapitel~\myref{sec:implementierung} das Simulationsprogramm erstellt. Die unterschiedlichen Simulationsläufe liefern die Daten für die Untersuchung des Laufzeitverhaltens in Kapitel~\myref{sec:laufzeitbetrachtungen}.
 
 % subsection ziele_dieser_arbeit (end)
-
-\subsection{Methodik} % (fold)
-\label{sub:methodik}
-
-Literaturrecherche\footnote{vgl. \cite{learningjava}}
-
-% subsection methodik (end)
 
 \subsection{Abgrenzungen} % (fold)
 \label{sub:abgrenzungen}
