@@ -1,6 +1,11 @@
 \section{Implementierung} % (fold)
 \label{sec:implementierung}
 
+\subsection{Klasse: Akteur} % (fold)
+\label{sub:klasse_akteur}
+
+% subsection klasse_akteur (end)
+
 \subsection{Klasse: Erzeuger} % (fold)
 \label{sub:klasse_erzeuger}
 
@@ -26,14 +31,26 @@
 \section{Laufzeitbetrachtungen} % (fold)
 \label{sec:laufzeitbetrachtungen}
 
-\subsection{Viele Verbraucher bzw. langsamer Erzeuger} % (fold)
-\label{sub:viele_verbraucher_bzw_langsamer_erzeuger}
+\subsection{Erzeuger schneller als Verbraucher} % (fold)
+\label{sub:erzeuger_schneller_als_verbraucher}
 
-% subsection viele_verbraucher_bzw_langsamer_erzeuger (end)
+% subsection erzeuger_schneller_als_verbraucher (end)
 
-\subsection{Wenige Verbraucher bzw. schneller Erzeuger} % (fold)
-\label{sub:wenige_verbraucher_bzw_schneller_erzeuger}
+\subsection{Erzeuger langsamer als Verbraucher} % (fold)
+\label{sub:erzeuger_langsamer_als_verbraucher}
 
-% subsection wenige_verbraucher_bzw_schneller_erzeuger (end)
+% subsection erzeuger_langsamer_als_verbraucher (end)
+
+\subsection{Ezeuger und Verbraucher gleich schnell} % (fold)
+\label{sub:ezeuger_und_verbraucher_gleich_schnell}
+
+% subsection ezeuger_und_verbraucher_gleich_schnell (end)
+
+\subsection{Reduzierung auf einen Erzeuger und einen Verbraucher} % (fold)
+\label{sub:reduzierung_auf_einen_erzeuger_und_einen_verbraucher}
+
+Facade–Designpattern: Die n Verbraucher mit zufälligen Wartezeiten verhalten sich wie 1 Verbraucher mit kürzeren, aber ebenfalls zufälligen Wartezeiten. Dadurch ist die Anzahl der Verbraucher und analog dazu auch die der Erzeuger für die Betrachtung irrelevant.
+
+% subsection reduzierung_auf_einen_erzeuger_und_einen_verbraucher (end)
 
 % section laufzeitbetrachtungen (end)
