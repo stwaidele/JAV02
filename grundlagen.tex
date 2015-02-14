@@ -6,22 +6,25 @@
 \subsection{Erzeuger–Verbraucher—Muster} % (fold)
 \label{sub:erzeuger_verbraucher_muster}
 
-Bei Erzeuger–Verbraucher–Konstellationen treten Produzenten und Konsumenten miteinander über eine Warteschlange bzw. einen Buffer miteinander in Kontakt.
+Bei Erzeuger–Verbraucher–Konstellationen treten Produzenten und Konsumenten miteinander über eine Warteschlange bzw. einen Buffer miteinander in Kontakt.\footnote{vgl. \cite{osdi}, S. 76f}
+
 Hierbei ist es unerheblich, was hierbei erzeugt bzw. verbraucht wird. Es kann sich um reale Güter handeln, die von Kunden nachgefragt werden, oder auch um Informationen, die Abgerufen werden. Ebenfalls ist es unerheblich, ob der Erzeuger tatsächlich den Bedarf des Verbrauchers befriedigt, oder ob Anfragen erzeugt werden, die dann vom Verbraucher abgearbeitet bzw. gelöst werden.\footnote{Ein Beispiel hierfür ist z.B. ein Trouble–Ticket–System: Hier werden vom Nutzer Supportanfragen „erzeugt“, die dann von den Supportmitarbeitern „verbraucht” werden.} 
 Auch können die Anzahl der Erzeuger und die der Verbraucher beliebig gewählt werden oder sogar schwanken. Allen Situationen ist jedoch gemeinsam, dass das Erzeugnis nur einem Verbraucher zur Verfügung steht und nur ein mal konsumiert werden kann.
 
-Durch das einfügen eines Buffers stellen Erzeuger–Verbraucher–Konstellationen einen Mechanismus dar, 
+Durch das einfügen eines Zwischenspeichers stellen Erzeuger–Verbraucher–Konstellationen einen Mechanismus dar, 
 durch den eine beliebige Anzahl von Produzenten und Verbraucher miteinander kommunizieren können.
 Es handelt es sich somit um ein Entuwrfsmuster, welches in der Programmierung von nebenläufigen Anwendungen.\footnote{vgl. \cite{openmp}, S. 111} 
 
 % subsection erzeuger_verbraucher_muster (end)
 
-\subsection{Warteschlange} % (fold)
-\label{sub:warteschlange}
+\subsection{Zwischenspeicher} % (fold)
+\label{sub:buffer}
 
-\ac{LIFO} oder \textbf{\ac{FIFO}}, Heap, Stack oder \textbf{Ringbuffer}
+Bei der Zwischenspeicher (engl. Buffer) können verschiedene Prinzipien zum Einsatz kommen. Bei \ac{LIFO} werden diejenigen Elemente zuerst entnommen, die als letztes hinzugefügt wurden. Dieses Verfahren kommt bei der Implementierung mithilfe eines Kellerspeichers (engl. Stack) zum Tragen.  Das \ac{FIFO} Prinzip, bei dem das zuerst hinzugefügte Element auch als erstes wieder entnommen wird kann durch eine Warteschlange (engl. Queue) oder mithilfe eines Ringbuffers implementiert werden.\footnote{vgl. \cite{algorithms}, Abschnitt 1.3.3.8 und 1.3.3.9}
 
-% subsection warteschlange (end)
+Bei der im Rahmen dieser Arbeit wird eine FIFO–Warteschlange genutzt.\footnote{vgl. \cite{javadoc:lbq}}
+
+% subsection buffer (end)
 
 \subsection{Kritische Abschnitte} % (fold)
 \label{sub:kritische_abschnitte}
