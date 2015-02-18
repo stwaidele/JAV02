@@ -11,7 +11,7 @@ Bei Erzeuger–Verbraucher–Konstellationen treten Produzenten und Konsumenten 
 Hierbei ist es unerheblich, was hierbei erzeugt bzw. verbraucht wird. Es kann sich um reale Güter handeln, die von Kunden nachgefragt werden, oder auch um Informationen, die Abgerufen werden. Ebenfalls ist es unerheblich, ob der Erzeuger tatsächlich den Bedarf des Verbrauchers befriedigt, oder ob Anfragen erzeugt werden, die dann vom Verbraucher abgearbeitet bzw. gelöst werden.\footnote{Ein Beispiel hierfür ist z.B. ein Trouble–Ticket–System: Hier werden vom Nutzer Supportanfragen „erzeugt“, die dann von den Supportmitarbeitern „verbraucht” werden.} 
 Auch können die Anzahl der Erzeuger und die der Verbraucher beliebig gewählt werden oder sogar schwanken. Allen Situationen ist jedoch gemeinsam, dass das Erzeugnis nur einem Verbraucher zur Verfügung steht und nur ein mal konsumiert werden kann.
 
-Durch das einfügen eines Zwischenspeichers stellen Erzeuger–Verbraucher–Konstellationen einen Mechanismus dar, 
+Durch das einfügen eines Zwischenspeichers stellen Erzeuger–\-Verbraucher–\-Kon\-stel\-lation\-en einen Mechanismus dar, 
 durch den eine beliebige Anzahl von Produzenten und Verbraucher miteinander kommunizieren können.
 Es handelt es sich somit um ein Entuwrfsmuster, welches in der Programmierung von nebenläufigen Anwendungen.\footnote{vgl. \cite{openmp}, S. 111} 
 
@@ -22,35 +22,28 @@ Es handelt es sich somit um ein Entuwrfsmuster, welches in der Programmierung vo
 
 Bei der Zwischenspeicher (engl. Buffer) können verschiedene Prinzipien zum Einsatz kommen. Bei \ac{LIFO} werden diejenigen Elemente zuerst entnommen, die als letztes hinzugefügt wurden. Dieses Verfahren kommt bei der Implementierung mithilfe eines Kellerspeichers (engl. Stack) zum Tragen.  Das \ac{FIFO} Prinzip, bei dem das zuerst hinzugefügte Element auch als erstes wieder entnommen wird kann durch eine Warteschlange (engl. Queue) oder mithilfe eines Ringbuffers implementiert werden.\footnote{vgl. \cite{algorithms}, Abschnitt 1.3.3.8 und 1.3.3.9}
 
-Bei der im Rahmen dieser Arbeit wird eine FIFO–Warteschlange genutzt.\footnote{vgl. \cite{javadoc:lbq}}
+Bei der im Rahmen dieser Arbeit wird eine FIFO–Warteschlange (engl. Queue) genutzt.\footnote{vgl. \cite{javadoc:lbq}}
 
 % subsection buffer (end)
 
 \subsection{Kritische Abschnitte} % (fold)
 \label{sub:kritische_abschnitte}
 
-Bei \ac{FIFO} \textit{müssten} gleichzeitiges Lesen und Schreiben möglich sein.
+Damit Verbraucher nicht auf eine leere Queue zugreift, muss zunächst geprüft werden, ob ein Element zur Verfügung steht. Da Prüfung und Zugriff jedoch getrennte Operationen darstellen, besteht die Möglichkeit, dass ein weiterer Verbraucher das letzte Element zwischen diesen beiden Vorgängen entnimmt.\footnote{Bei mehreren Erzeugern tritt das Problem analog bei fast voller Warteschlange auf.} Um solche konkurrierende Zugriffe zu Verhindern, muss verhindert werden, dass sich mehrere Verbraucher gleichzeitig in diesem kritischen Abschnitt befinden.
 
-Erklärung von Mutex und Semaphoren.\footnote{vgl. \cite{oscon}}
+Eine solche Zugangskontrolle lässt im sich Programm mithilfe von Mutex' bzw. Semaphoren realisieren. Beiden Konzepten ist gemein, dass ein Thread vor dem Eintritt in einen kritischen Abschnitt dessen Verfügbarkeit prüft und gegebenenfalls solange wartet, bis diese eintritt. Anschließend wird vermerkt, dass sich ein Thread im kritischen Abschnitt befindet. Beim Verlassen wird diese Markierung wieder entfernt. Bei einem Mutex wird die Zugangskontrolle über einen Wahrheitswert geregelt, weshalb hier maximal ein Thread den kritischen Bereich betreten kann.\footnote{vgl. \cite{oscon}, Abschnitt 5.5} Bei Semaphoren kommt ein Zähler zum Einsatz, über den die Anzahl der gleichzeitig erlaubten Threads gesteuert werden kann.\footnote{vgl. \cite{oscon}, Abschnitt 5.6} Hierbei ist sicher zu stellen, dass zwischen der Verfügbarkeitsprüfung und der Sperre für andere Threads kein Kontextwechsel\footnote{d.h. zwischen diesen Vorgängen muss verhindert werden, dass der Scheduler dem aktuellen Thread die Ausführung entzieht und ein anderer Thread an diesem Punkt den kritischen Abschnitt betritt.} stattfindet.
 
+Hierbei ist zu beachten, dass sich Verbraucherthreads und Erzeugerthreads nicht gegenseitig blockieren. Bei \ac{FIFO} Warteschlangen dürfen diese Operationen auch quasi gleichzeitig ablaufen. Hier können Verbraucher das älteste Element der Warteschlange entnehmen, während ein Erzeuger ein neues Element hinzufügt. Es bestehen somit zwei getrennte Kritische Abschnitte\footnote{„Prüfung ob Element vorhanden und Entnahme“ sowie „Prüfung ob Platz vorhanden und Einstellen”}, die unabhängig voneinander überwacht werden können.
+
+Im Falle einer Realisierung mit Hilfe einer \ac{LIFO} Warteschlange besteht ein gemeinsamer kritischer Abschnitt. Erzeuger und Verbraucher können hier nicht gleichzeitig auf die Warteschlange zugreifen. Hierbei ist sicher zu stellen, dass die Akteure bei leerer bzw. voller Warteschlange den kritischen Abschnitt wieder verlassen, um den Programmfluss nicht dauerhaft in einem sogenannten „Deadlock“ zu blockieren.\footnote{Ein blockierender Verbraucher bei leerer Queue würde hierbei auch einen Erzeuger blockieren, der das erwartete Element somit nicht liefern kann.}
 % subsection kritische_abschnitte (end)
-
-\subsection{Beachtenswerte Zustände} % (fold)
-\label{sub:beachtenswerte_zustande}
-
-Schreiben bei voller Queue, Lesen bei leerer Queue
-
-% subsection beachtenswerte_zustande (end)
 
 \subsection{Freiwilliges und unfreiwilliges Warten} % (fold)
 \label{sub:freiwilliges_und_unfreiwilliges_warten}
 
+Wie im Abschnitt~\myref{sub:klasse_akteur} noch näher beschrieben wird, besteht sowohl der Vorgang des Erzeugens als auch der des Verbrauchens im wesentlichen aus drei Phasen: Die Zeit, die für die Herstellung bzw. für den Konsum eines Elements benötigt wird\footnote{Dies schließt die Phase der „Sättigung“ mit ein.}, welche von außen als freiwillige Wartezeit wahrgenommen wird; die Wartezeit, die gegebenenfalls beim Warten auf den kritischen Abschnitt anfällt und somit als unfreiwillig anzusehen ist, sowie dem eigentlichen Zugriff auf die Warteschlange. Bei Untersuchungen konkreter Erzeuger–Verbraucher–Systeme können diese Zeiten entsprechend gemessen und unterschiedlich bewertet werden.
+
 % subsection freiwilliges_und_unfreiwilliges_warten (end)
-
-\subsection{Realisierung mit Semaphoren und Mutex} % (fold)
-\label{sub:realisierung_mit_semaphoren_und_mutex}
-
-% subsection realisierung_mit_semaphoren_und_mutex (end)
 
 % section erzeuger_und_verbraucher (end)
 
@@ -58,15 +51,14 @@ Schreiben bei voller Queue, Lesen bei leerer Queue
 \section{Genutzte Sprachmerkmale von JAVA} % (fold)
 \label{sec:genutzte_sprachmerkmale_von_java}
 
-\subsection{Generische Klassen} % (fold)
+\subsection{Collections, generische Klassen, Iteratoren} % (fold)
 \label{sub:generics}
+Die zu erstellende Anwendung benötigt Klassen, in denen mehrere Objekte\footnote{Hierbei handelt es sich um die Verbraucherthread–Objekte sowie um die Elemente der Warteschlange} gespeichert werden können. Die Java–Klassenbibliothek stellt hierzu verschiedene Containerklassen zur Verfügung, welche von der Klasse \code{Collection} abstammen\footnote{Ausnahme: \code{java.util.Map}, vgl. \cite{javaorange}, Seite 688} und Objekte beliebigen Typs aufnehmen.\footnote{vgl. \cite{javadoc:collection}}
 
+Um dennoch eine Prüfung der Typen zu ermöglichen, wurde in Java ab der Version 5.0 das Konzept der generischen Programmierung (auch „parametrisierte Typen“) eingeführt. Hierbei kann bei der Instanziierung angegeben werden, welcher Klasse die in der Collection zu speichernden Objekte angehören werden. So wird durch die Deklaration \code{ArrayList <Verbraucher> v = new ArrayList<Verbraucher>();} ein Behälter vom Typ \code{ArrayList} erzeugt, der Elemente vom Typ \code{Verbraucher} speichert.\footnote{vgl. \cite{javaorange}, Seite 622ff}
+
+Iteratoren stellen eine Möglichkeit dar, auf die in einer Collection gespeicherten Elemente zuzugreifen. Hierbei ist keine Kenntnis der tatsächlichen Stelle, an der das jeweilige Element gespeichert ist notwendig. Sind alle Elemente abgearbeitet, liefert die Methode \code{hasNext()} als Ergebnis \code{FALSE}.\footnote{vgl. \cite{javaorange}, Seite 692} In der zu erstellenden Anwendung wird ein Iterator implizit in Form einer erweiterten \code{for}–Schleife genutzt.
 % subsection generics (end)
-
-\subsection{Iteratoren} % (fold)
-\label{sub:iterators}
-
-% subsection iterators (end)
 
 \subsection{Threads} % (fold)
 \label{sub:die_klasse_thread}
