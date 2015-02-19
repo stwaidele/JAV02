@@ -6,7 +6,7 @@
 \subsection{Erzeuger–Verbraucher—Muster} % (fold)
 \label{sub:erzeuger_verbraucher_muster}
 
-Bei Erzeuger–Verbraucher–Konstellationen treten Produzenten und Konsumenten miteinander über eine Warteschlange bzw. einen Buffer miteinander in Kontakt.\footnote{vgl. \cite{osdi}, S. 76f}
+Bei Erzeuger–Verbraucher–Konstellationen treten Produzenten und Konsumenten miteinander über eine Warteschlange bzw. einen Buffer miteinander in Kontakt. Jeder der Akteure handelt hierbei unabhängig von den anderen und quasi gleichzeitig.\footnote{vgl. \cite{osdi}, S. 76f}
 
 Hierbei ist es unerheblich, was hierbei erzeugt bzw. verbraucht wird. Es kann sich um reale Güter handeln, die von Kunden nachgefragt werden, oder auch um Informationen, die Abgerufen werden. Ebenfalls ist es unerheblich, ob der Erzeuger tatsächlich den Bedarf des Verbrauchers befriedigt, oder ob Anfragen erzeugt werden, die dann vom Verbraucher abgearbeitet bzw. gelöst werden.\footnote{Ein Beispiel hierfür ist z.B. ein Trouble–Ticket–System: Hier werden vom Nutzer Supportanfragen „erzeugt“, die dann von den Supportmitarbeitern „verbraucht” werden.} 
 Auch können die Anzahl der Erzeuger und die der Verbraucher beliebig gewählt werden oder sogar schwanken. Allen Situationen ist jedoch gemeinsam, dass das Erzeugnis nur einem Verbraucher zur Verfügung steht und nur ein mal konsumiert werden kann.
@@ -31,7 +31,7 @@ Bei der im Rahmen dieser Arbeit wird eine FIFO–Warteschlange (engl. Queue) gen
 
 Damit Verbraucher nicht auf eine leere Queue zugreift, muss zunächst geprüft werden, ob ein Element zur Verfügung steht. Da Prüfung und Zugriff jedoch getrennte Operationen darstellen, besteht die Möglichkeit, dass ein weiterer Verbraucher das letzte Element zwischen diesen beiden Vorgängen entnimmt.\footnote{Bei mehreren Erzeugern tritt das Problem analog bei fast voller Warteschlange auf.} Um solche konkurrierende Zugriffe zu Verhindern, muss verhindert werden, dass sich mehrere Verbraucher gleichzeitig in diesem kritischen Abschnitt befinden.
 
-Eine solche Zugangskontrolle lässt im sich Programm mithilfe von Mutex' bzw. Semaphoren realisieren. Beiden Konzepten ist gemein, dass ein Thread vor dem Eintritt in einen kritischen Abschnitt dessen Verfügbarkeit prüft und gegebenenfalls solange wartet, bis diese eintritt. Anschließend wird vermerkt, dass sich ein Thread im kritischen Abschnitt befindet. Beim Verlassen wird diese Markierung wieder entfernt. Bei einem Mutex wird die Zugangskontrolle über einen Wahrheitswert geregelt, weshalb hier maximal ein Thread den kritischen Bereich betreten kann.\footnote{vgl. \cite{oscon}, Abschnitt 5.5} Bei Semaphoren kommt ein Zähler zum Einsatz, über den die Anzahl der gleichzeitig erlaubten Threads gesteuert werden kann.\footnote{vgl. \cite{oscon}, Abschnitt 5.6} Hierbei ist sicher zu stellen, dass zwischen der Verfügbarkeitsprüfung und der Sperre für andere Threads kein Kontextwechsel\footnote{d.h. zwischen diesen Vorgängen muss verhindert werden, dass der Scheduler dem aktuellen Thread die Ausführung entzieht und ein anderer Thread an diesem Punkt den kritischen Abschnitt betritt.} stattfindet.
+Eine solche Zugangskontrolle lässt im sich Programm mithilfe von Mutex' bzw. Semaphoren realisieren. Beiden Konzepten ist gemein, dass ein Thread vor dem Eintritt in einen kritischen Abschnitt dessen Verfügbarkeit prüft und gegebenenfalls solange wartet, bis diese eintritt. Anschließend wird vermerkt, dass sich ein Thread im kritischen Abschnitt befindet. Beim Verlassen wird diese Markierung wieder entfernt. Bei einem Mutex wird die Zugangskontrolle über einen Wahrheitswert geregelt, weshalb hier maximal ein Thread den kritischen Bereich betreten kann.\footnote{vgl. \cite{oscon}, Abschnitt 5.5} Bei Semaphoren kommt ein Zähler zum Einsatz, über den die Anzahl der gleichzeitig erlaubten Threads gesteuert werden kann.\footnote{vgl. \cite{oscon}, Abschnitt 5.6} Hierbei ist sicher zu stellen, dass zwischen der Verfügbarkeitsprüfung und der Sperre für andere Threads kein anderer Thread diesen kritischen Abschnitt betreten kann.\footnote{Diese Operation muss nicht atomar im strengen Sinne sein. Kontextwechsel sind durchaus zu erlauben, jedoch nicht zu Threads, die um die betreffende Resource konkurrieren.} stattfindet. Code, der kritische Abschnitte korrekt behandelt wird auch als threadsicher bezeichnet.
 
 Hierbei ist zu beachten, dass sich Verbraucherthreads und Erzeugerthreads nicht gegenseitig blockieren. Bei \ac{FIFO} Warteschlangen dürfen diese Operationen auch quasi gleichzeitig ablaufen. Hier können Verbraucher das älteste Element der Warteschlange entnehmen, während ein Erzeuger ein neues Element hinzufügt. Es bestehen somit zwei getrennte Kritische Abschnitte\footnote{„Prüfung ob Element vorhanden und Entnahme“ sowie „Prüfung ob Platz vorhanden und Einstellen”}, die unabhängig voneinander überwacht werden können.
 
@@ -48,7 +48,7 @@ Wie im Abschnitt~\myref{sub:klasse_akteur} noch näher beschrieben wird, besteht
 % section erzeuger_und_verbraucher (end)
 
 \newpage
-\section{Genutzte Sprachmerkmale von JAVA} % (fold)
+\section{Genutzte Sprachmerkmale von Java} % (fold)
 \label{sec:genutzte_sprachmerkmale_von_java}
 
 \subsection{Collections, generische Klassen, Iteratoren} % (fold)
@@ -62,16 +62,23 @@ Iteratoren stellen eine Möglichkeit dar, auf die in einer Collection gespeicher
 
 \subsection{Threads} % (fold)
 \label{sub:die_klasse_thread}
+Die im Abschnitt~\myref{sub:erzeuger_verbraucher_muster} beschriebene Unabhängigkeit und Gleichzeitigkeit der Akteure lässt sich in Java mit Hilfe von Threads implementieren. Hierbei handelt es sich um Anweisungsstränge die innerhalb eines Prozesses nebenläufig abgearbeitet werden.\footnote{vgl. \cite{javaorange}, Seite 748f}
+Hierzu ist eine Ableitung der Klasse \code{Thread} zu erstellen, welche die Methode \code{run()} implementiert. Bei der Instanziierung der Objekte werden dann die entsprechenden Threads erzeugt, welche anschließend durch den Aufruf der Methode \code{start()} gestartet werden.\footnote{vgl. \cite{javaorange}, Seite 752f}
 
 % subsection die_klasse_thread (end)
 
-\subsection{Realisierung mit LinkedBlockingQueue} % (fold)
+\subsection{Threadsicherheit} % (fold)
 \label{sub:realisierung_mit_linkedblockingqueue}
+Die Java–Klassenbibliothek bietet keine Semaphoren zur Sychronisierung von Threads an. Ein entsprechender Mechanismus müsste somit in einer eigenen Klasse implementiert werden. Hierbei ist besonders zu beachten, dass wie in Abschnitt~\myref{sub:kritische_abschnitte} beschrieben die Verfügbarkeitsprüfung und die Sperre der anderen Threads in einer quasi–atomaren Operation erfolgt. Dies kann mit Hilfe des Schlüsselwortes \code{synchronized} sichergestellt werden, welches eine \ac{Mutex} um den damit markierten Block bzw. um die damit ausgezeichnete Methode legt.\footnote{vgl. \cite{javaorange}, Seite 767} Alternativ können über die Klasse \code{ReentrantLock} von Codeblöcken unabhängige Sperren angefordert werden.\footnote{vgl. \cite{javadoc:rl}} Die Überprüfung der Queue auf vorhandene Elemente bzw. Platz zum Einfügen neuer Elemente muss hierbei genau so wie der eigentliche Zugriff sind hierbei ebenfalls zu kodieren.
 
+Die generische Klasse \code{LinkedBlockingQueue<E>} implementiert alle im vorhergehenden Absatz genannten Aufgaben. Hierbei handelt es sich um eine FIFO–Queue, die threadsicheren Zugriff auf die Elemente ermöglicht. Beim Hinzufügen durch die Methode \code{put()} wird gegebenenfalls gewartet, bis Platz vorhanden ist, beim Entnehmen durch \code{take{}} wird gegebenenfalls gewartet, bis die Queue nicht mehr leer ist.\footnote{vgl. \cite{javadoc:lbq}} Intern verwendet die Klasse \code{ReentrantLock} zur Vermeidung von konkurrierenden Zugriffen\footnote{vgl. \cite{javadoc:lbqsource}, Zeile 377–402}
 % subsection realisierung_mit_linkedblockingqueue (end)
 
-\subsection{Zufall} % (fold)
+\subsection{Zufällige Wartezeiten} % (fold)
 \label{sub:zufall}
+Pseudo–Zufallszahlen werden in Java mithilfe von Objekten der Klasse Random generiert. Die Methode \code{nextInt(n)} liefert eine zufällige Ganzzahl r für die gilt $0 \leq r < n$. Durch die Addition von 1 kann hierdurch eine Wartezeit von mindestens einer Zeiteinheit erzeugt werden.
+
+Gewartet wird innerhalb eines Thread mit der Methode \code{sleep()}, welche Wartezeit in Millisekunden als Argument erwartet. Daher kann die Zeiteinheit sehr klein gewählt werden, was einen schnellen Lauf der Simulation ermöglicht. Oder durch einen entsprechenden Faktor kann die Zeiteinheit größer gewählt werden, damit der Verlauf der Simulation besser live beobachtet werden kann.
 
 % subsection zufall (end)
 
