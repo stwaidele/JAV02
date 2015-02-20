@@ -1,3 +1,22 @@
+\section{Modellierung} % (fold)
+\label{sec:modellierung}
+
+\subsection{Ereignisgesteuerte Prozessketten} % (fold)
+\label{sub:ereignisgesteuerte_prozessketten}
+
+Aus der Aufgabenbeschreibung ergeben sich die in Abbildung~\ref{fig:epk} dargestellten Prozessketten für Erzeuger und Verbraucher. Hierbei ist zu erkennen, dass sich die Prozesse bei identischem Ablaufschema lediglich in den  durchgeführten Prüfungen und Operationen unterscheiden. Hierdurch liegt es nahe, dass die Ablaufsteuerung im objektorientierten Entwurf in einer abstrakten Basisklasse modelliert wird, und nur die unterschiedlichen Handlungen in den jeweiligen spezialisierten Ableitungen konkretisiert werden.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=.5\textwidth]{Erzeuger-Verbraucher-EPK.jpg}
+\caption{Ereignisgesteuerte Prozessketten}
+\label{fig:epk}
+\end{center}
+\end{figure}
+
+% subsection ereignisgesteuerte_prozessketten (end)
+% section modellierung (end)
+
 \section{Implementierung} % (fold)
 \label{sec:implementierung}
 
