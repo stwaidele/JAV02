@@ -39,6 +39,7 @@
 \usepackage{acronym}
 \usepackage[activate={true,nocompatibility},final,tracking=false,kerning=true,spacing=true,factor=1100,stretch=20,shrink=20]{microtype}
 
+
 % http://blog.lewumpy.de/2011/01/latex-vorlage-fur-deutsches-literaturverzeichnis-und-zitierstil/
 \usepackage{natbib}
 
@@ -119,6 +120,11 @@
 \ifacronym
 \include{abkuerzungen}
 \fi
+
+\addcontentsline{toc}{section}{Quellcodeverzeichnis} 
+\listof{quellcode}{Quellcodeverzeichnis}
+\newpage
+
 
 \parskip=1em
 \end{spacing} 
