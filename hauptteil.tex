@@ -29,32 +29,42 @@ Aus der Aufgabenbeschreibung ergeben sich die in Abbildung~\ref{fig:epk} dargest
 
 % section modellierung (end)
 
+\newpage
 \section{Implementierung} % (fold)
 \label{sec:implementierung}
 
 \subsection{Klasse: Akteur} % (fold)
 \label{sub:klasse_akteur}
+In der der abstrakten Klasse \code{Akteur} werden die Eigenschaften und Methoden zusammengefasst, die den Klassen \code{Erzeuger} und \code{Verbraucher} gemeinsam sind. Dazu gehören die Angaben zur Wartezeit \code{sek} bzw. \code{immerZufall} sowie die Bezeichnung \code{meinName}, die bei der Ausgabe dazu dienen kann, die Akteure zu unterscheiden. Diese Variablen werden von den Konstruktoren beim Erzeugen der Objekte befüllt. Des weiteren wird ein Generator für Pseude–Zufallszahlen sowie eine Referenz auf die Warteschlange benötigt.
 
+In der Methode \code{run()}, die beim Starten des Threads aufgerufen wird, wird zunächst wie gefordert der Name und der Füllstand der Queue, ergänzt mit der Wartezeit ausgegeben. Anschließend wird die abstrakte Methode \code{aktion()} aufgerufen, welche die spezifischen Aktionen der abzuleitenden Klassen ausführt. Abschließend wird durch Aufruf der Methode \code{sleep()} der Elternklasse \code{Thread} die vorgegebene oder zufällig bestimmte Zeit gewartet.
+
+Die Klasse \code{Akteur} implementiert keinen Zugriff auf die Queue und betritt somit keinen kritischen Abschnitt.
 % subsection klasse_akteur (end)
 
 \subsection{Klasse: Erzeuger} % (fold)
 \label{sub:klasse_erzeuger}
+Die von \code{Akteur} abgeleitete Klasse \code{Erzeuger} implementiert lediglich die Methode \code{aktion()}. Hierzu muss der kritische Abschnitt betreten werden. Hierin muss geprüft werden, ob Platz in der Queue vorhanden ist. Falls nicht, muss gewartet werden, bis dies der Fall ist. Wenn Platz vohanden ist, wird das produzierte Element\footnote{Hierbei handelt es sich in der Simulation um den Integerwert 1} in der Queue abgelegt. Anschließend wird der kritische Abschnitt wieder verlassen.
 
+Diese Vorgehensweise entspricht der Implementierung der \code{put() } der Klasse \code{LinkedBlockingQueue}, welche indirekt über die Klasse \code{Queue} aufgerufen wird.\footnote{vgl. \cite{javadoc:lbqsourceput}}
+
+Wie im Abschnitt~\myref{sub:kritische_abschnitte} ausgeführt, sind das Hinzufügen und das Entnehmen von ELementen bei \ac{FIFO} Warteschlangen getrennte kritische Abschnitte. Somit kann das Warten im Falle einer vollen Warteschlange durchgeführt werden, ohne eine Deadlock–Situation herbeizuführen.
 % subsection klasse_erzeuger (end)
 
 \subsection{Klasse: Verbraucher} % (fold)
 \label{sub:klasse_verbraucher}
+Die von \code{Akteur} abgeleitete Klasse \code{Verbraucher} implementiert lediglich die Methode \code{aktion()}. Hierzu muss der kritische Abschnitt betreten werden. Hierin muss geprüft werden, ob mindestens ein Element in der Queue vorhanden ist. Falls nicht, muss gewartet werden, bis dies der Fall ist. Wenn ein Element vohanden ist, wird das älteste entnommen. Anschließend wird der kritische Abschnitt wieder verlassen.
 
+Diese Vorgehensweise entspricht der Implementierung der \code{take()} der Klasse \code{LinkedBlockingQueue} welche indirekt über die Klasse \code{Queue} aufgerufen wird.\footnote{vgl. \cite{javadoc:lbqsource}} 
 % subsection klasse_verbraucher (end)
-
-\subsection{Klasse: Logger} % (fold)
-\label{sub:klasse_logger}
-
-% subsection klasse_logger (end)
 
 \subsection{Sonstige Programmmerkmale} % (fold)
 \label{sub:sonstige_programmmerkmale}
+Die Klasse \code{Queue} realisiert das Singleton–Entwurfsmuster, um ein Element der Klasse \code{LinkedBlockingQueue} der gewünschten Größe allen beteiligten Objekten und damit allen Threads zugänglich zu machen.\footnote{vgl. \cite{gof}, Seite 127ff}
 
+Die Klasse \code{Logger} übernimmt die geforderte Ausgabe von „E“ bzw. „V” gefolgt von der Angabe der Zahl der momentan in der Warteschlange vorhandenen Elementen. Ergänzt werden diese Angaben von der Wartezeit\footnote{Hierbei ist die Wartezeit innerhalb des kritischen Abschnitts nicht berücksichtigt} und der dem Verbraucher zugewiesenen laufenden Nummer.
+
+Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben einigen Konstanten auch die benötigten Obkekte der Klassen \code{Logger} und \code{Erzeuger} sowie eine \code{ArrayList} für die nach dem Programmstart zu bestimmende Anzahl der Verbraucher definiert. Die Wartezeiten für die Verbraucher und den Erzeuger werden abgefragt und die Threads erzeugt und gestartet. Anschließend werden alle weiteren Schritte des Programms in den Threads ausgeführt. 
 % subsection sonstige_programmmerkmale (end)
 % section implementierung (end)
 
