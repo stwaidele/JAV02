@@ -40,6 +40,15 @@ Im Falle einer Realisierung mit Hilfe einer \ac{LIFO} Warteschlange besteht ein 
 Ein weiterer kritischer Abschnitt der mit einem Mutex geschützt werden muss besteht bei der Ausgabe der in der Aufgabenstellung geforderten Logging–Informationen auf den Bildschirm. Hierbei könnte ein Thread von einem weiteren während der Ausgabe unterbrochen werden. Dieser zweite Thread würde dann seine Informationen zwischen die des Ersten schreiben. Um die Bildschirmausgabe konkurrieren alle Verbraucher und der Erzeuger.
 % subsection kritische_abschnitte (end)
 
+\subsection{Korrektes Logging} % (fold)
+\label{sub:korrektes_logging}
+Wie bereits in Abschnitt~\myref{sub:abgrenzungen} erwähnt, kann ein Akteure \code{A1} zwischen der Bildschirmausgabe und dem eigentlichen Zugriff auf die Warteschlange von einem anderen Akteur \code{A2} unterbrochen werden. Hierbei wird die Ausgabe von \code{A1} inkorrekt.
+
+Dies kann dadurch vermieden werden, dass die Bildschirmausgabe ebenfalls in den kritischen Bereich mit aufgenommen wird. Hierzu ist statt den unabhängigen Locks für das Hinzufügen und das Entnehmen von Elementen ein Gemeinsames notwendig, welches einen Kontextwechsel zwischen Ausgabe und Zugriff verhindert. Hierdurch können sich bei ganz voller oder ganz leerer Warteschlange wartende Erzeuger und Verbraucher gegenseitig so blockieren, dass es zu einer Deadlocksituation kommt. Dies könnte vermieden werden, wenn Verbraucher bei leerer Warteschlange den kritischen Abschnitt direkt wieder verlassen, ohne ein Element zu entnehmen bzw. Erzeuger bei voller Warteschlange das aktuelle Element verwerfen, um den kritischen Abschnitt wieder verlassen zu können.
+
+Eine weitere Möglichkeit, ist eine zweistufigen Ausgabe unter Nutzung eines Ticket–Systems: Ein Akteur betritt den kritischen Abschnitt des Ticket–Systems\footnote{Der kritische Abschnitt des Ticket–Systems ist für Erzeuger und Verbraucher gemeinsam.}, erzeugt die Ausgabezeile, speichert diese lokal und erhält ein „Ticket“ in Form einer fortlaufenden Nummer bevor er diesen ersten kritischen Abschnitt verlässt. Anschließend betritt der Akteur den kritischen Abschnitt der Warteschlange\footnote{Dieser ist wie im Abschnitt~\myref{sub:kritische_abschnitte} beschrieben für Erzeuger und Verbraucher unabhängig voneinander.} und prüft die Verfügbarkeit von Elementen bzw. Platz in der Warteschlange. Gegebenenfalls wird gewartet. Dann übermittelt der Akteur die Ticketnummer an das Ticketsystem. Hierdurch werden alle älteren Tickets ungültig. Ist das übergebene Ticket gültig, wird die Bildschirmausgabe durchgeführt, auf die Warteschlange zugegriffen und der kritische Abschnitt verlassen. Ist das übergebene Ticket ungültig, wird der kritische Abschnitt direkt verlassen, um den Vorgang wird ohne Wartezeit neu begonnen. 
+% subsection korrektes_logging (end)
+
 \subsection{Freiwilliges und unfreiwilliges Warten} % (fold)
 \label{sub:freiwilliges_und_unfreiwilliges_warten}
 

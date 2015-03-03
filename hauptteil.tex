@@ -72,6 +72,11 @@ Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben ei
 \section{Laufzeitbetrachtungen} % (fold)
 \label{sec:laufzeitbetrachtungen}
 
+\subsection{Generelle Beobachtungen} % (fold)
+\label{sub:generelle_beobachtungen}
+
+% subsection generelle_beobachtungen (end)
+
 \subsection{Erzeuger schneller als Verbraucher} % (fold)
 \label{sub:erzeuger_schneller_als_verbraucher}
 
@@ -86,12 +91,5 @@ Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben ei
 \label{sub:ezeuger_und_verbraucher_gleich_schnell}
 
 % subsection ezeuger_und_verbraucher_gleich_schnell (end)
-
-\subsection{Reduzierung auf einen Erzeuger \\und einen Verbraucher} % (fold)
-\label{sub:reduzierung_auf_einen_erzeuger_und_einen_verbraucher}
-
-Mehrere Verbraucher mit zufälligen Wartezeiten verhalten sich wie 1 Verbraucher mit kürzeren, aber ebenfalls zufälligen Wartezeiten. Dadurch ist die Anzahl der Verbraucher und analog dazu auch die der Erzeuger für die Betrachtung irrelevant. Wie in Abbildung~\myref{fig:aeuivalenz} dargestellt, können Szenarien mit mehreren Verbrauchern in äquivalente Szenarien mit nur einem Verbraucher überführt werden. Da bei mehrmaliger zufälliger Auswahl von Zahlen $0 \le { x }_{ n } < m$ jeder Wert von $0$ bis $m-1$ jedes Mal mit der gleichen Wahrscheinlichkeit $\frac { 1 }{ m } $ auftritt, sind auch die Eintrittswahrscheinlichkeiten von allen Sequenzen ${ x }_{ 1 }, { x }_{ 2 }, { x }_{ 3 }, ..., { x }_{ n }$ mit ${\left( \frac { 1 }{ m }  \right)}^{n}$ gleich.
-
-% subsection reduzierung_auf_einen_erzeuger_und_einen_verbraucher (end)
 
 % section laufzeitbetrachtungen (end)
