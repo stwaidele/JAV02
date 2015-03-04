@@ -1,6 +1,5 @@
 %!TEX root = /Users/stwaidele/Dropbox (Leisinger)/02 - AKAD/Projektbericht/Möglichkeiten der Digitalen Kontaktaufnahme im Endkundenbereich/vorlage.tex
 
-\addtocontents{toc}{\protect\newpage}
 \appendix
 \addcontentsline{toc}{section}{Anhang} 
 
@@ -91,7 +90,9 @@
 \label{sec:ergebnisse_verschiedenener_programmlaufe}
 
 \subsection{Erzeuger schneller als Verbraucher} % (fold)
-\begin{ausgabe}[H]
+\subsubsection{Zufälliger Erzeuger, 3 zufällige Verbraucher} % (fold)
+\label{ssub:zufalliger_erzeuger_3_zufallige_verbraucher}
+\begin{quellcode}[H]
 \begin{scriptsize}
 \begin{spacing}{1.0}
 \begin{minted}[bgcolor=bg, linenos, firstnumber=1]{java}
@@ -152,9 +153,12 @@ V3(  5sek):    0 |                    |
 \label{out:esv}
 \end{spacing}
 \end{scriptsize}
-\end{ausgabe}
+\end{quellcode}
+% subsubsection zufalliger_erzeuger_3_zufallige_verbraucher (end)
 
-\begin{ausgabe}[H]
+\subsubsection{Erzeuger wartet 1 ZE, 8 zufällige Verbraucher} % (fold)
+\label{sub:erzeuger_wartet_1_ze_8_zufallige_verbraucher}
+\begin{quellcode}[H]
 \begin{scriptsize}
 \begin{spacing}{1.0}
 \begin{minted}[bgcolor=bg, linenos, firstnumber=1]{java}
@@ -235,7 +239,158 @@ E (  1sek):    0 |                    |
 \label{out:esv2}
 \end{spacing}
 \end{scriptsize}
-\end{ausgabe}
+\end{quellcode}
+
+% subsubsection erzeuger_wartet_1_ze_8_zufallige_verbraucher (end)
 % subsection erzeuger_schneller_als_verbraucher (end)
+
+\subsection{Erzeuger langsamer als Verbraucher} % (fold)
+\subsubsection{Erzeuger wartet 1 ZE, 6 zufällige Verbraucher} % (fold)
+\label{ssub:zufalliger_erzeuger_3_zufallige_verbraucher}
+\begin{quellcode}[H]
+\begin{scriptsize}
+\begin{spacing}{1.0}
+\begin{minted}[bgcolor=bg, linenos, firstnumber=1]{java}
+QUEUE_SIZE = 20; MAX_RANDOM_WAIT = 15; SLOW_DOWN = 100;
+Konfiguration: E1V0.0.0.0.0.0.
+V1(  1sek):    0 |                    |
+E (  1sek):    0 |                    |
+E (  1sek):    0 |                    |
+E (  1sek):    1 |*                   |
+E (  1sek):    2 |**                  |
+E (  1sek):    3 |***                 |
+E (  1sek):    4 |****                |
+V6(  7sek):    5 |*****               |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=151]{java}
+E (  1sek):   18 |******************  |
+E (  1sek):   19 |******************* |
+V3(  5sek):   20 |********************|
+E (  1sek):   19 |******************* |
+V2( 10sek):   20 |********************|
+E (  1sek):   19 |******************* |
+V2(  1sek):   20 |********************|
+E (  1sek):   19 |******************* |
+V6(  7sek):   20 |********************|
+E (  1sek):   19 |******************* |
+V6(  1sek):   20 |********************|
+E (  1sek):   20 |********************|
+V1( 10sek):   20 |********************|
+E (  1sek):   19 |******************* |
+V3(  6sek):   20 |********************|
+V1(  1sek):   20 |********************|
+E (  1sek):   18 |******************  |
+V4( 10sek):   19 |******************* |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=225]{java}
+E (  1sek):   12 |************        |
+E (  1sek):   13 |*************       |
+V6(  2sek):   14 |**************      |
+E (  1sek):   13 |*************       |
+V5(  5sek):   14 |**************      |
+E (  1sek):   13 |*************       |
+E (  1sek):   14 |**************      |
+V5(  2sek):   15 |***************     |
+E (  1sek):   14 |**************      |
+V6(  4sek):   15 |***************     |
+E (  1sek):   14 |**************      |
+V1( 13sek):   15 |***************     |
+V3(  7sek):   14 |**************      |
+E (  1sek):   13 |*************       |
+E (  1sek):   14 |**************      |
+V2( 12sek):   15 |***************     |
+E (  1sek):   14 |**************      |
+E (  1sek):   15 |***************     |
+E (  1sek):   16 |****************    |
+V4( 12sek):   17 |*****************   |
+E (  1sek):   16 |****************    |
+V6(  8sek):   17 |*****************   |
+E (  1sek):   16 |****************    |
+E (  1sek):   17 |*****************   |
+E (  1sek):   18 |******************  |
+V1(  9sek):   19 |******************* |
+\end{minted}
+\caption{Erzeuger wartet 1 ZE, 6 zufällige Verbraucher}
+\label{out:esv}
+\end{spacing}
+\end{scriptsize}
+\end{quellcode}
+% subsubsection zufalliger_erzeuger_3_zufallige_verbraucher (end)
+
+
+\subsection{Erzeuger und Verbraucher etwa gleich schnell} % (fold)
+\subsubsection{Zufälliger Erzeuger, ein zufälliger Verbraucher} % (fold)
+\label{ssub:zufalliger_erzeuger_1_zufallige_verbraucher}
+\begin{quellcode}[H]
+\begin{scriptsize}
+\begin{spacing}{1.0}
+\begin{minted}[bgcolor=bg, linenos, firstnumber=1]{java}
+UEUE_SIZE = 20; MAX_RANDOM_WAIT = 15; SLOW_DOWN = 100;
+Konfiguration: E0V0.
+E (  2sek):    0 |                    |
+E (  4sek):    1 |*                   |
+E (  2sek):    2 |**                  |
+V1( 14sek):    3 |***                 |
+E (  7sek):    2 |**                  |
+V1(  9sek):    3 |***                 |
+E ( 11sek):    2 |**                  |
+E (  6sek):    3 |***                 |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=515]{java}
+E ( 14sek):    2 |**                  |
+V1(  3sek):    3 |***                 |
+E (  7sek):    2 |**                  |
+E (  4sek):    3 |***                 |
+V1( 13sek):    4 |****                |
+E (  6sek):    3 |***                 |
+V1(  6sek):    4 |****                |
+E ( 13sek):    3 |***                 |
+E (  2sek):    4 |****                |
+V1( 14sek):    5 |*****               |
+V1(  6sek):    4 |****                |
+E ( 13sek):    3 |***                 |
+V1(  8sek):    4 |****                |
+E (  7sek):    3 |***                 |
+E (  7sek):    4 |****                |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=3035]{java}
+V1(  5sek):   18 |******************  |
+E ( 12sek):   17 |*****************   |
+E (  7sek):   18 |******************  |
+V1( 13sek):   19 |******************* |
+V1(  4sek):   18 |******************  |
+E (  7sek):   17 |*****************   |
+E (  8sek):   18 |******************  |
+V1( 14sek):   19 |******************* |
+E (  6sek):   18 |******************  |
+E (  9sek):   19 |******************* |
+V1( 13sek):   20 |********************|
+E (  5sek):   19 |******************* |
+V1(  3sek):   20 |********************|
+V1(  9sek):   19 |******************* |
+E ( 12sek):   18 |******************  |
+V1(  8sek):   19 |******************* |
+E (  8sek):   18 |******************  |
+V1(  4sek):   19 |******************* |
+\end{minted}
+\caption{zufälliger Erzeuger, 1 zufälliger Verbraucher}
+\label{out:esv}
+\end{spacing}
+\end{scriptsize}
+\end{quellcode}
+% subsubsection zufalliger_erzeuger_3_zufallige_verbraucher (end)
+
 
 % section ergebnisse_verschiedenener_programmlaufe (end)
