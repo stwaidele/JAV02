@@ -77,24 +77,55 @@ Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben ei
 
 \subsection{Generelle Beobachtungen} % (fold)
 \label{sub:generelle_beobachtungen}
-Die erstellte Anwendung wurde in unterschiedlichen Konfigurationen ausgeführt. Ein der Aufgabenstellung entsprechender Programmlauf ist z.B. in der Logdatei \code{e0v0.0.0.txt} dokumentiert. Hier wurden ein Erzeuger–Thread und drei Verbraucher–Threads ausgeführt, deren Wartezeiten zufällig bestimmt wurden. Aufgrund der Zufälligen Wartezeit zwischen den Erzeugungs– bzw. den Verbrauchsvorgängen ist jedoch hier nur eingeschränkt eine systematische Beobachtung der Ergebnisse möglich. Allerdings zeigen sich auch hier schon fast alle für Szenarien dieser Art typischen Zustände der Akteure und der Queue, welche in den folgenden Abschnitten auch anhand von weiteren Programmläufen näher betrachtet werden.
+Die erstellte Anwendung wurde in unterschiedlichen Konfigurationen ausgeführt. Ein der Aufgabenstellung entsprechender Programmlauf ist z.B. in der Logdatei \code{e0v0.0.0.txt} dokumentiert. Hier wurden ein Erzeuger–Thread und drei Verbraucher–Threads ausgeführt, deren Wartezeiten zufällig bestimmt wurden. In diesem Programmlauf zeigen sich einige interessante Abschnitte, welche im folgenden Abschnitten auch anhand von weiteren Programmläufen näher betrachtet werden.
 
-Besonderes Augenmerk soll auf den Füllständen der Warteschlange liegen. Wie oft trifft ein Verbraucher auf eine leere Warteschlange, wie oft ein Erzeuger auf eine volle Warteschlange. Dies sind die Situationen, in denen die Programmausführung ins Stocken gerät. Ebenfalls wird die Anzahl der Situationen ermittelt, in denen weder Verbraucher noch Erzeuger warten mussten. Diese Situationen sind wohl in den meisten Fällen als Idealzustand anzusehen.
+Besonderes Augenmerk soll auf den Füllständen der Warteschlange liegen. Wie oft trifft ein Verbraucher auf eine leere Warteschlange\footnote{z.B. in den meisten Fällen bei \code{e0v0.0.0.txt}}, wie oft ein Erzeuger auf eine volle Warteschlange\footnote{z.B. in Zeile 2589 von \code{e0v0.txt}}. Dies sind die Situationen, in denen die Programmausführung ins Stocken gerät. Ebenfalls wird die Anzahl der Situationen ermittelt, in denen weder Verbraucher noch Erzeuger warten mussten. Diese Situationen sind wohl in den meisten Fällen als Idealzustand anzusehen.
+
+Wenn man die Entwicklung der Warteschlange betrachtet, so lassen sich hier drei Tendenzen unterscheiden: Die Anzahl der Elemente in der Queue nimmt tendentiell ab, sie nimmt tendentiell zu oder sie schwankt in einem Bereich. Dies lässt sich auf die Geschwindigkeit von Erzeuger und Verbrauchern zurückführen. Um eine Vergleichbarkeit zu gewährleisten wurden alle Simulationsläufe mit einer Warteschlange mit 20 Plätzen sowie einer maximalen Wartezeit von 15 Zeiteinheiten durchgeführt. Eine Auswertung ist in Tabelle~\ref{tab:ergebnisse} auf Seite~\pageref{tab:ergebnisse} zu finden. Die getätigten Beobachtungen beschreiben jedoch Grundlegende Eigenschaften und lassen sich somit auch auf Läufe mit anderen Parametern übertragen.
+
+\begin{landscape}
+\begin{footnotesize}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{| p{3cm} | p{3cm} || r | r | r | r r | r r | r r |}  \hline                       
+  \textbf{Erzeuger}	& \textbf{Verbraucher}  & \textbf{….put()} & \textbf{….take()} & \textbf{Gesamt} & \multicolumn{2}{|l|}{\textbf{E wartet}} & \multicolumn{2}{|l|}{\textbf{V wartet}} & \multicolumn{2}{|l|}{\textbf{ohne Warten}}  \\ \hline 
+zufällig 		& 3, zufällig & 11.612 			 & 11.614 			 & 23.226 		   & 0 		 & 0,00\% 						 & 11.383  & 98,01\% 					   & 11.843		&	50,99\%	\\ \hline
+zufällig 		& 1, zufällig & 11.593		     & 11.592 			 & 23.185 		   & 384 	 & 3,31\% 						 & 465     &  4,01\% 					   & 22.720		&	97,99\%	\\ \hline
+1 ZE 			& 6, zufällig & 70.442 	 	     & 70.432 			 & 140.874 		   & 1358 	 & 1,93\% 						 & 1       &  <0,01\% 					   & 140.873	&  >99,99\%	\\ \hline
+1 ZE 			& 7, zufällig & 82.070 	 		 & 82.054 			 & 164.124 		   & 7055    & 8,60\% 						 & 328     & 0,40\% 					   & 163.796		&	99,80\%	\\ \hline
+1 ZE 			& 8, zufällig & 84.068 	 		 & 84.069 			 & 168.137 		   & 13 	 & 0,02\% 						 & 48.162  & 57,29\% 					   & 119.975	&	71,36\%	\\ \hline
+1 ZE & 8, mit 5, 7, 11, 13, 17, 19, 23 und 42 ZE & 60.680 & 60.660	 & 121.340 		   & 9 		 & 0,01\% 						 & 5  & 0,01\% 					   & 121.335		&	>99,99\%	\\ \hline
+\end{tabular}
+\caption{Eckdaten einiger Simulationsläufe}
+\label{tab:ergebnisse}
+\end{center}
+\end{table}
+\textbf{Legende:} \textbf{Erzeuger}: Wartezeit des Erzeugers in \ac{ZE}; \textbf{Verbraucher:} Anzahl und Wartezeiten der Verbraucher in \ac{ZE}; \textbf{….put():} Anzahl der Elemente, die der Warteschlange hinzugefügt wurden; \textbf{….take():} Anzahl der Elemente, die der Warteschlange entnommen wurden; \textbf{E wartet:} Wie oft musste der Erzeuger auf Platz in der Warteschlange warten. Die Prozentangabe bezieht sich auf die in Spalte „….put()“ angegebene Zahl ; \textbf{V wartet:} Wie oft mussten Verbraucher auf Elemente in der Warteschlange warten. Die Prozentangabe bezieht sich auf die in Spalte „….take()“ angegebene Zahl; \textbf{Gesamt:} Wie oft konnten die Operationen an der Warteschlange ohne unfreiwillige Wartezeit durchgeführt werden. Die Prozentangabe bezieht sich auf die in Spalte „Gesamt“ angegebene Zahl; Die Logdateien der Simulationsläufe sind der elektronischen Form dieser Arbeit beigefügt.
+\end{footnotesize}
+\end{landscape}
 
 % subsection generelle_beobachtungen (end)
 
-\subsection{Erzeuger schneller als Verbraucher} % (fold)
-\label{sub:erzeuger_schneller_als_verbraucher}
-
-% subsection erzeuger_schneller_als_verbraucher (end)
-
-\subsection{Erzeuger langsamer als Verbraucher} % (fold)
+\subsection{Erzeuger deutlich langsamer als Verbraucher} % (fold)
 \label{sub:erzeuger_langsamer_als_verbraucher}
+Dies ist bei der hier gegebenen Aufgabenstellung und Implementierung der häufigste Fall. Da die zufälligen Wartezeiten im gleichen Bereich liegen sind der Erzeuger und einer der Verbraucher über einen längeren Zeitraum betrachtet gleich schnell. Da aber mehrere (statistisch betrachtet ebenfalls gleich schnelle) Verbraucher gleichzeitig handeln, wartet in den meisten Fällen bereits einer von ihnen auf das vom Erzeuger eingestellte Element. Daher ist die Queue meistens leer oder fast leer. Eine Ausnahme bilden die Sequenzen, bei denen die Verbraucher vom Zufallsgenerator sehr lange und der Erzeuger sehr kurze Wartezeiten zugeteilt bekommen, oder durch Unwägbarkeiten des Scheduling die Verbraucher–Threads deutlich länger als der Erzeuger blockiert werden. Dann kann sich ein gewisser Lagerbestand aufbauen, der aber wieder mit Fortschreiten der Simulation wieder zurückgeht. Dies ist in den Zeilen 13902 bis 13906 von der Logdatei \code{e0v0.0.0.txt} der Fall, wo der Füllstand seinen Hochpunkt mit 3 vorhandenen Elementen Erreicht. Noch besser ist der Effekt in den Zeilen 287—848 (Aufbau) bzw. den Zeilen 848—1085 (Abbau) von Logdatei \code{e1v0.0.0.0.0.0.0.0.txt}\footnote{Ein Erzeuger mit 1 Zeiteinhaeit Wartezeit und 8 zufällige Verbraucher} zu sehen.
 
+Eine solche Konfiguration ist in Fällen sinnvoll und wünschenswert, in denen das Produkt schnell verderblich ist, die Lagerhaltung sehr teuer ist, oder wenn es Probleme verursacht, wenn der Erzeuger auf einen freien Platz in der Warteschlange warten muss. Dem Verbraucher darf eine unter Umständen lange unfreiwillige Wartezeit nichts ausmachen.\footnote{vgl. Abschnitt~\myref{sub:freiwilliges_und_unfreiwilliges_warten}}
 % subsection erzeuger_langsamer_als_verbraucher (end)
 
-\subsection{Ezeuger und Verbraucher gleich schnell} % (fold)
-\label{sub:ezeuger_und_verbraucher_gleich_schnell}
+
+\subsection{Erzeuger deutlich schneller als Verbraucher} % (fold)
+\label{sub:erzeuger_schneller_als_verbraucher}
+Dieser Fall tritt im Fall von einem zufallsgesteuerten Erzeuger und mehreren ebenfalls zufallsgesteuerten Verbrauchern wie im vorherigen Abschnitt beschrieben nur in sehr kurzen Intervallen auf. Die Auswirkungen sind in einem Testlauf mit fester Wartezeit von nur einer Zeiteinheit für den Erzeuger und zufälliger Wartezeit zwischen 1 und 20 für die 6 Verbraucher wie in der Logdatei \code{e1v0.0.0.0.0.0.txt} gut zu sehen: Die Warteschlange ist ist die meiste Zeit voll oder fast voll. Nur Vereinzelt entstehen größere Leerstände. 
+
+Eine solche Konfiguration ist in Fällen sinnvoll und wünschenswert, in denen das Produkt gut und günstig gelagert werden kann. Eine kurzfristige Produktionsunterbrechungen sollten problemlos möglich sein. Dem Verbraucher kann dafür eine kurze bzw. sogar gar keine unfreiwillige Wartezeit garantiert werden, welche allerdings auf Seiten des Erzeugers auftritt.
+% subsection erzeuger_schneller_als_verbraucher (end)
+
+\subsection{Erzeuger und Verbraucher ungefähr gleich schnell} % (fold)
+\label{sub:erzeuger_und_verbraucher_gleich_schnell}
+Hierbei handelt es sich um den Idealzustand, in dem sowohl Erzeuger als auch Verbraucher die wenigsten Wartezeiten haben. Dies ist z.B. in den Simulationsläufen mit einem zufälligen Erzeuger und einem zufälligen Verbraucher\footnote{siehe Logdatei \code{e0v0.txt}} und mit einem Erzeuger mit einer Zeiteinheit und mit acht Verbrauchern mit 5, 7, 11, 13, 17, 19, 23 und 42 Zeiteinheiten Wartezeit zu sehen. Hier entstehen die geringsten unfreiwilligen Wartezeiten. Wenn man von den freiwilligen Wartezeiten absieht ist er Durchsatz des gesamten Systems ist hierbei am größten.
+
+Eine solche Konfiguration ist anzustreben, wenn sowohl Erzeuger als auch Verbraucher möglichst wenig durch volle bzw. leere Warteschlangen aufgehalten werden sollen und dadurch eine größtmögliche Auslastung auf beiden Seiten erreicht werden soll.
 
 % subsection ezeuger_und_verbraucher_gleich_schnell (end)
 
