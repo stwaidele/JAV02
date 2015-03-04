@@ -67,7 +67,7 @@ Die Klasse \code{Queue} realisiert das Singleton–Entwurfsmuster, um ein Elemen
 
 Die Klasse \code{Logger} übernimmt die geforderte Ausgabe von „E“ bzw. „V” gefolgt von der Angabe der Zahl der momentan in der Warteschlange vorhandenen Elementen. Ergänzt werden diese Angaben von der Wartezeit\footnote{Hierbei ist die Wartezeit innerhalb des kritischen Abschnitts nicht berücksichtigt} und der dem Verbraucher zugewiesenen laufenden Nummer. Durch die Ausgabe des kompletten, zuvor zusammengesetzten Ausgabestrings in einem einzigen Aufruf von \code{System.out.println()} wird hier der konkurrierende Zugriff auf die gemeinsame Resource der Bildschirmausgabe threadischer geregelt.\footnote{siehe auch Abschnitt~\myref{sub:realisierung_mit_linkedblockingqueue}}
 
-Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben einigen Konstanten auch die benötigten Obkekte der Klassen \code{Logger} und \code{Erzeuger} sowie eine \code{ArrayList} für die nach dem Programmstart zu bestimmende Anzahl der Verbraucher definiert. Die Wartezeiten für die Verbraucher und den Erzeuger werden abgefragt und die Threads erzeugt und gestartet. Anschließend werden alle weiteren Schritte des Programms in den Threads ausgeführt. 
+Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben einigen Konstanten auch die benötigten Obkekte der Klassen \code{Logger} und \code{Erzeuger} sowie eine \code{ArrayList} für die nach dem Programmstart zu bestimmende Anzahl der Verbraucher definiert. Die Wartezeiten für die Verbraucher und den Erzeuger werden abgefragt und die Threads erzeugt und gestartet. Hierbei wird auch die vom Nutzer gewählte Konfiguration erfasst und zur Dokumentation in den Ausgabestrom geschrieben. Anschließend werden alle weiteren Schritte des Programms in den Threads ausgeführt. 
 % subsection sonstige_programmmerkmale (end)
 % section implementierung (end)
 
@@ -77,6 +77,9 @@ Die Klasse Pizzeria stellt das Gerüst der Anwendung dar. Hierin werden neben ei
 
 \subsection{Generelle Beobachtungen} % (fold)
 \label{sub:generelle_beobachtungen}
+Die erstellte Anwendung wurde in unterschiedlichen Konfigurationen ausgeführt. Ein der Aufgabenstellung entsprechender Programmlauf ist z.B. in der Logdatei \code{e0v0.0.0.txt} dokumentiert. Hier wurden ein Erzeuger–Thread und drei Verbraucher–Threads ausgeführt, deren Wartezeiten zufällig bestimmt wurden. Aufgrund der Zufälligen Wartezeit zwischen den Erzeugungs– bzw. den Verbrauchsvorgängen ist jedoch hier nur eingeschränkt eine systematische Beobachtung der Ergebnisse möglich. Allerdings zeigen sich auch hier schon fast alle für Szenarien dieser Art typischen Zustände der Akteure und der Queue, welche in den folgenden Abschnitten auch anhand von weiteren Programmläufen näher betrachtet werden.
+
+Besonderes Augenmerk soll auf den Füllständen der Warteschlange liegen. Wie oft trifft ein Verbraucher auf eine leere Warteschlange, wie oft ein Erzeuger auf eine volle Warteschlange. Dies sind die Situationen, in denen die Programmausführung ins Stocken gerät. Ebenfalls wird die Anzahl der Situationen ermittelt, in denen weder Verbraucher noch Erzeuger warten mussten. Diese Situationen sind wohl in den meisten Fällen als Idealzustand anzusehen.
 
 % subsection generelle_beobachtungen (end)
 
