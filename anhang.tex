@@ -11,78 +11,78 @@
 \subsection{Klasse: Pizzeria} % (fold)
 \label{sub:klassepizzeria}
 \begin{quellcode}[H]
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{spacing}{1.0}
 \inputminted[bgcolor=bg, tabsize=2, linenos]{java}{../JAV02-Pizzeria/src/Pizzeria.java}
 \caption{Pizzeria.java}
 \label{java:pizzeria}
 \end{spacing}
-\end{footnotesize}
+\end{scriptsize}
 \end{quellcode}
 % subsection klasse_pizzeria (end)
 
 \subsection{Klasse: Akteur} % (fold)
 \label{sub:klasseakteur}
 \begin{quellcode}[H]
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{spacing}{1.0}
 \inputminted[bgcolor=bg, tabsize=2, linenos]{java}{../JAV02-Pizzeria/src/Akteur.java}
 \caption{Akteur.java}
 \label{java:akteur}
 \end{spacing}
-\end{footnotesize}
+\end{scriptsize}
 \end{quellcode}
 % subsection klasse_akteur (end)
 
 \subsection{Klasse: Erzeuger} % (fold)
 \label{sub:klasseerzeuger}
 \begin{quellcode}[H]
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{spacing}{1.0}
 \inputminted[bgcolor=bg, tabsize=2, linenos]{java}{../JAV02-Pizzeria/src/Erzeuger.java}
 \caption{Erzeuger.java}
 \label{java:erzeuger}
 \end{spacing}
-\end{footnotesize}
+\end{scriptsize}
 \end{quellcode}
 % subsection klasse_erzeuger (end)
 
 \subsection{Klasse: Verbraucher} % (fold)
 \label{sub:verbraucher}
 \begin{quellcode}[H]
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{spacing}{1.0}
 \inputminted[bgcolor=bg, tabsize=2, linenos]{java}{../JAV02-Pizzeria/src/Verbraucher.java}
 \caption{Verbraucher.java}
 \label{java:verbraucher}
 \end{spacing}
-\end{footnotesize}
+\end{scriptsize}
 \end{quellcode}
 % subsection verbraucher (end)
 
 \subsection{Klasse: Queue} % (fold)
 \label{sub:klassequeue}
 \begin{quellcode}[H]
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{spacing}{1.0}
 \inputminted[bgcolor=bg, tabsize=2, linenos]{java}{../JAV02-Pizzeria/src/Queue.java}
 \caption{Queue.java}
 \label{java:queue}
 \end{spacing}
-\end{footnotesize}
+\end{scriptsize}
 \end{quellcode}
 % subsection klasse_queue (end)
 
 \subsection{Klasse: Logger} % (fold)
 \label{sub:klasselogger}
 \begin{quellcode}[H]
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{spacing}{1.0}
 \inputminted[bgcolor=bg, tabsize=2, linenos]{java}{../JAV02-Pizzeria/src/Logger.java}
 \caption{Logger.java}
 \label{java:logger}
 \end{spacing}
-\end{footnotesize}
+\end{scriptsize}
 \end{quellcode}
 % subsection klasse_logger (end)
 % section quelltext_der_anwendung (end)
@@ -91,17 +91,151 @@
 \label{sec:ergebnisse_verschiedenener_programmlaufe}
 
 \subsection{Erzeuger schneller als Verbraucher} % (fold)
-\label{sub:erzeuger_schneller_als_verbraucher}
-\begin{quellcode}[H]
-\begin{tiny}
+\begin{ausgabe}[H]
+\begin{scriptsize}
 \begin{spacing}{1.0}
-\inputminted[bgcolor=bg, tabsize=2, linenos]{console}{esv.txt}
-\caption{Erzeuger schneller als Verbraucher}
+\begin{minted}[bgcolor=bg, linenos, firstnumber=1]{java}
+QUEUE_SIZE = 20; MAX_RANDOM_WAIT = 15; SLOW_DOWN = 100;
+Konfiguration: E0V0.0.0.
+V1(  2sek):    0 |                    |
+E (  6sek):    0 |                    |
+V1(  3sek):    0 |                    |
+V2( 13sek):    0 |                    |
+V3( 13sek):    0 |                    |
+E (  9sek):    0 |                    |
+E (  9sek):    0 |                    |
+V2(  4sek):    0 |                    |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=428]{java}
+V1(  4sek):    0 |                    |
+V2( 13sek):    0 |                    |
+E ( 14sek):    0 |                    |
+V3(  6sek):    0 |                    |
+E (  8sek):    0 |                    |
+V1( 13sek):    0 |                    |
+E ( 14sek):    0 |                    |
+E (  2sek):    0 |                    |
+E (  4sek):    0 |                    |
+V3(  6sek):    0 |                    |
+E (  2sek):    0 |                    |
+E (  1sek):    0 |                    |
+V2( 12sek):    1 |*                   |
+E (  5sek):    0 |                    |
+V2(  3sek):    1 |*                   |
+E (  2sek):    0 |                    |
+V1( 11sek):    1 |*                   |
+V3( 13sek):    0 |                    |
+V2(  7sek):    0 |                    |
+V1(  6sek):    0 |                    |
+E ( 14sek):    0 |                    |
+V3(  1sek):    0 |                    |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=13901]{java}
+E (  1sek):    0 |                    |
+E (  1sek):    1 |*                   |
+E (  2sek):    2 |**                  |
+V3( 11sek):    3 |***                 |
+V2( 12sek):    2 |**                  |
+V1( 14sek):    1 |*                   |
+E ( 12sek):    0 |                    |
+V3( 12sek):    1 |*                   |
+V1(  5sek):    0 |                    |
+V3(  5sek):    0 |                    |
+\end{minted}
+\caption{Zufälliger Erzeuger, 3 zufällige Verbraucher}
 \label{out:esv}
 \end{spacing}
-\end{tiny}
-\end{quellcode}
+\end{scriptsize}
+\end{ausgabe}
 
+\begin{ausgabe}[H]
+\begin{scriptsize}
+\begin{spacing}{1.0}
+\begin{minted}[bgcolor=bg, linenos, firstnumber=1]{java}
+QUEUE_SIZE = 20; MAX_RANDOM_WAIT = 15; SLOW_DOWN = 100;
+Konfiguration: E1V0.0.0.0.0.0.0.0.
+E (  1sek):    0 |                    |
+E (  1sek):    1 |*                   |
+E (  1sek):    2 |**                  |
+V7(  4sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+V1(  5sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+V3(  6sek):    3 |***                 |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=287]{java}
+E (  1sek):    0 |                    |
+E (  1sek):    1 |*                   |
+E (  1sek):    2 |**                  |
+V2(  8sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+V8(  8sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+V5( 14sek):    3 |***                 |
+V7( 11sek):    2 |**                  |
+E (  1sek):    1 |*                   |
+E (  1sek):    2 |**                  |
+V5(  2sek):    3 |***                 |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=839]{java}
+E (  1sek):   14 |**************      |
+E (  1sek):   15 |***************     |
+E (  1sek):   16 |****************    |
+E (  1sek):   17 |*****************   |
+V3( 12sek):   18 |******************  |
+E (  1sek):   17 |*****************   |
+V1( 14sek):   18 |******************  |
+E (  1sek):   17 |*****************   |
+E (  1sek):   18 |******************  |
+V2( 12sek):   19 |******************* |
+V5( 12sek):   18 |******************  |
+V4(  7sek):   17 |*****************   |
+E (  1sek):   16 |****************    |
+V7( 10sek):   17 |*****************   |
+V8( 11sek):   16 |****************    |
+\end{minted}
+
+…
+
+\begin{minted}[bgcolor=bg, linenos, firstnumber=1066]{java}
+E (  1sek):    3 |***                 |
+V6(  7sek):    4 |****                |
+V3( 11sek):    4 |****                |
+E (  1sek):    2 |**                  |
+V6(  1sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+V1(  7sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+E (  1sek):    3 |***                 |
+V5( 14sek):    4 |****                |
+E (  1sek):    3 |***                 |
+V5(  1sek):    4 |****                |
+V8( 11sek):    3 |***                 |
+E (  1sek):    2 |**                  |
+V4(  8sek):    3 |***                 |
+V3(  6sek):    2 |**                  |
+E (  1sek):    1 |*                   |
+V7( 10sek):    2 |**                  |
+V8(  2sek):    1 |*                   |
+E (  1sek):    0 |                    |
+\end{minted}
+\caption{Erzeuger wartet 1 ZE, 8 zufällige Verbraucher}
+\label{out:esv2}
+\end{spacing}
+\end{scriptsize}
+\end{ausgabe}
 % subsection erzeuger_schneller_als_verbraucher (end)
 
 % section ergebnisse_verschiedenener_programmlaufe (end)

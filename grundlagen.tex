@@ -37,7 +37,7 @@ Hierbei ist zu beachten, dass sich Verbraucherthreads und Erzeugerthreads nicht 
 
 Im Falle einer Realisierung mit Hilfe einer \ac{LIFO} Warteschlange besteht ein gemeinsamer kritischer Abschnitt. Erzeuger und Verbraucher können hier nicht gleichzeitig auf die Warteschlange zugreifen. Hierbei ist sicher zu stellen, dass die Akteure bei leerer bzw. voller Warteschlange den kritischen Abschnitt wieder verlassen, um den Programmfluss nicht dauerhaft in einem sogenannten „Deadlock“ zu blockieren.\footnote{Ein blockierender Verbraucher bei leerer Queue würde hierbei auch einen Erzeuger blockieren, der das erwartete Element somit nicht liefern kann.}
 
-Ein weiterer kritischer Abschnitt der mit einem Mutex geschützt werden muss besteht bei der Ausgabe der in der Aufgabenstellung geforderten Logging–Informationen auf den Bildschirm. Hierbei könnte ein Thread von einem weiteren während der Ausgabe unterbrochen werden. Dieser zweite Thread würde dann seine Informationen zwischen die des Ersten schreiben. Um die Bildschirmausgabe konkurrieren alle Verbraucher und der Erzeuger.
+Ein weiterer kritischer Abschnitt der mit einem Mutex geschützt werden muss besteht bei der Ausgabe der in der Aufgabenstellung geforderten Informationen auf den Bildschirm. Hierbei könnte ein Thread von einem weiteren während der Ausgabe unterbrochen werden. Dieser zweite Thread würde dann seine Informationen zwischen die des Ersten schreiben. Um die Bildschirmausgabe konkurrieren alle Verbraucher und der Erzeuger.
 % subsection kritische_abschnitte (end)
 
 \subsection{Korrektes Logging} % (fold)
@@ -46,7 +46,7 @@ Wie bereits in Abschnitt~\myref{sub:abgrenzungen} erwähnt, kann ein Akteure \co
 
 Dies kann dadurch vermieden werden, dass die Bildschirmausgabe ebenfalls in den kritischen Bereich mit aufgenommen wird. Hierzu ist statt den unabhängigen Locks für das Hinzufügen und das Entnehmen von Elementen ein Gemeinsames notwendig, welches einen Kontextwechsel zwischen Ausgabe und Zugriff verhindert. Hierdurch können sich bei ganz voller oder ganz leerer Warteschlange wartende Erzeuger und Verbraucher gegenseitig so blockieren, dass es zu einer Deadlocksituation kommt. Dies könnte vermieden werden, wenn Verbraucher bei leerer Warteschlange den kritischen Abschnitt direkt wieder verlassen, ohne ein Element zu entnehmen bzw. Erzeuger bei voller Warteschlange das aktuelle Element verwerfen, um den kritischen Abschnitt wieder verlassen zu können.
 
-Eine weitere Möglichkeit, ist eine zweistufigen Ausgabe unter Nutzung eines Ticket–Systems: Ein Akteur betritt den kritischen Abschnitt des Ticket–Systems\footnote{Der kritische Abschnitt des Ticket–Systems ist für Erzeuger und Verbraucher gemeinsam.}, erzeugt die Ausgabezeile, speichert diese lokal und erhält ein „Ticket“ in Form einer fortlaufenden Nummer bevor er diesen ersten kritischen Abschnitt verlässt. Anschließend betritt der Akteur den kritischen Abschnitt der Warteschlange\footnote{Dieser ist wie im Abschnitt~\myref{sub:kritische_abschnitte} beschrieben für Erzeuger und Verbraucher unabhängig voneinander.} und prüft die Verfügbarkeit von Elementen bzw. Platz in der Warteschlange. Gegebenenfalls wird gewartet. Dann übermittelt der Akteur die Ticketnummer an das Ticketsystem. Hierdurch werden alle älteren Tickets ungültig. Ist das übergebene Ticket gültig, wird die Bildschirmausgabe durchgeführt, auf die Warteschlange zugegriffen und der kritische Abschnitt verlassen. Ist das übergebene Ticket ungültig, wird der kritische Abschnitt direkt verlassen, um den Vorgang wird ohne Wartezeit neu begonnen. 
+Eine weitere Möglichkeit, ist eine zweistufigen Ausgabe unter Nutzung eines Ticket--Systems: Ein Akteur betritt den kritischen Abschnitt des Ticket–Systems\footnote{Der kritische Abschnitt des Ticket–Systems ist für Erzeuger und Verbraucher gemeinsam.}, erzeugt die Ausgabezeile, speichert diese lokal und erhält ein „Ticket“ in Form einer fortlaufenden Nummer bevor er diesen ersten kritischen Abschnitt verlässt. Anschließend betritt der Akteur den kritischen Abschnitt der Warteschlange\footnote{Dieser ist wie im Abschnitt~\myref{sub:kritische_abschnitte} beschrieben für Erzeuger und Verbraucher unabhängig voneinander.} und prüft die Verfügbarkeit von Elementen bzw. Platz in der Warteschlange. Gegebenenfalls wird gewartet. Dann übermittelt der Akteur die Ticketnummer an das Ticketsystem. Hierdurch werden alle älteren Tickets ungültig. Ist das übergebene Ticket gültig, wird die Bildschirmausgabe durchgeführt, auf die Warteschlange zugegriffen und der kritische Abschnitt verlassen. Ist das übergebene Ticket ungültig, wird der kritische Abschnitt direkt verlassen, um den Vorgang wird ohne Wartezeit neu begonnen. 
 % subsection korrektes_logging (end)
 
 \subsection{Freiwilliges und unfreiwilliges Warten} % (fold)
@@ -58,7 +58,6 @@ Wie im Abschnitt~\myref{sub:klasse_akteur} noch näher beschrieben wird, besteht
 
 % section erzeuger_und_verbraucher (end)
 
-\newpage
 \section{Genutzte Sprachmerkmale von Java} % (fold)
 \label{sec:genutzte_sprachmerkmale_von_java}
 
@@ -84,7 +83,7 @@ Die Java–Klassenbibliothek bietet keine Semaphoren zur Sychronisierung von Thr
 
 Die generische Klasse \code{LinkedBlockingQueue<E>} implementiert alle im vorhergehenden Absatz genannten Aufgaben. Hierbei handelt es sich um eine FIFO–Queue, die threadsicheren Zugriff auf die Elemente ermöglicht. Beim Hinzufügen durch die Methode \code{put()} wird gegebenenfalls gewartet, bis Platz vorhanden ist, beim Entnehmen durch \code{take{}} wird gegebenenfalls gewartet, bis die Queue nicht mehr leer ist.\footnote{vgl. \cite{javadoc:lbq}} Intern verwendet die Klasse \code{ReentrantLock} zur Vermeidung von konkurrierenden Zugriffen\footnote{vgl. \cite{javadoc:lbqsource}, Zeile 377–402}
 
-Die Methode \code{System.out.println()} ist durch interne Verwendung \code{synchronized() threadsicher.\footnote{vgl. \cite{javadoc:println}, Zeile 771—776}} Hierdurch ist auch der Zugriff auf die Bildschirmausgabe für den Fall geregelt, dass mehrere Threads gleichzeitig die Methode \code{log()} der Klasse \code{Logger} aufrufen.
+Die Methode \code{System.out.println()} verwendet intern \code{synchronized()} und ist somit threadsicher.\footnote{vgl. \cite{javadoc:println}, Zeile 771—776} Hierdurch ist auch der Zugriff auf die Bildschirmausgabe für den Fall geregelt, dass mehrere Threads gleichzeitig die Methode \code{log()} der Klasse \code{Logger} aufrufen.
 % subsection realisierung_mit_linkedblockingqueue (end)
 
 \subsection{Zufällige Wartezeiten} % (fold)

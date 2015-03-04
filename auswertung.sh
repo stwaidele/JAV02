@@ -7,6 +7,8 @@ echo -n "Anzahl V: "
 cat $1 | grep -c "^V" 
 
 echo -n "E muss warten: "
-cat $1 | grep -c "^E.(...sek):   15 |" 
+cat $1 | grep -c "^E.(...sek):   20 |" 
 echo -n "V muss warten: "
 cat $1 | grep -c "^V.(...sek):    0 |"
+
+echo

@@ -1,7 +1,8 @@
-\contentsline {quellcode}{\numberline {1}{\ignorespaces Pizzeria.java}}{23}{quellcode.1}
-\contentsline {quellcode}{\numberline {2}{\ignorespaces Akteur.java}}{24}{quellcode.2}
-\contentsline {quellcode}{\numberline {3}{\ignorespaces Erzeuger.java}}{25}{quellcode.3}
-\contentsline {quellcode}{\numberline {4}{\ignorespaces Verbraucher.java}}{25}{quellcode.4}
-\contentsline {quellcode}{\numberline {5}{\ignorespaces Queue.java}}{26}{quellcode.5}
-\contentsline {quellcode}{\numberline {6}{\ignorespaces Logger.java}}{27}{quellcode.6}
-\contentsline {quellcode}{\numberline {7}{\ignorespaces Erzeuger schneller als Verbraucher}}{27}{quellcode.7}
+\contentsline {quellcode}{\numberline {1}{\ignorespaces Pizzeria.java}}{20}{quellcode.1}
+\contentsline {quellcode}{\numberline {2}{\ignorespaces Akteur.java}}{21}{quellcode.2}
+\contentsline {quellcode}{\numberline {3}{\ignorespaces Erzeuger.java}}{22}{quellcode.3}
+\contentsline {quellcode}{\numberline {4}{\ignorespaces Verbraucher.java}}{22}{quellcode.4}
+\contentsline {quellcode}{\numberline {5}{\ignorespaces Queue.java}}{23}{quellcode.5}
+\contentsline {quellcode}{\numberline {6}{\ignorespaces Logger.java}}{23}{quellcode.6}
+\contentsline {ausgabe}{\numberline {1}{\ignorespaces Zuf\IeC {\"a}lliger Erzeuger, 3 zuf\IeC {\"a}llige Verbraucher}}{24}{ausgabe.1}
+\contentsline {ausgabe}{\numberline {2}{\ignorespaces Erzeuger wartet 1 ZE, 8 zuf\IeC {\"a}llige Verbraucher}}{25}{ausgabe.2}
