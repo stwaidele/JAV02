@@ -4,15 +4,18 @@
 
 \subsection{Fazit} % (fold)
 \label{sub:fazit}
+Die vorliegende Arbeit gibt einen ersten Einblick in die behandelten Themanfelder „Erzeuger–Verbraucher–Problem“ und „Threading“. Die hierzu benötigten Konzepte sowie die von der Java–Umgebung zur Verfügung gestellten Werkzeuge zur Threadprogrammierung und Synchronisation wurden in Kapitel~\ref{sec:erzeuger_und_verbraucher} erläutert, bevor in Kapitel~\ref{sec:modellierung} die Anwendung entsprechend den Spezifikationen entworfen und implementiert wurde. Verschiedene Programmläufe wurden beobachtet, beschrieben und bewertet.
 
 % subsection fazit (end)
 
 \subsection{Ausblick} % (fold)
 \label{sub:ausblick}
-Ausbau der Anwendung, um verschiedene Szenarien simulieren zu können, z.B. variables Arbeitstempo der Erzeuger (höhere Belastung von Maschinen oder Menschen), zusätzlichen Erzeugern (Wie lange dauert das Anfahren?), Hinterlegung von Kosten für Lagerhaltung, Wartezeiten bei Erzeuger oder Verbraucher, etc. Bis hin zu hinterlegter Kalkulation, das den Endpreis des Produktes ermittelt und somit steuernd auf die Nachfrage einwirkt.
+Weitere Entwicklungsmöglichkeiten bestehen im Ausbau der Anwendung, um verschiedene Szenarien simulieren zu können. So können z.B. Erzeuger mit variablen Arbeitsgeschwindigkeiten (höhere Belastung von Maschinen oder Menschen), zusätzlichen Erzeugern (Wie lange dauert das Anfahren?), Hinterlegung von Kosten für Lagerhaltung, Wartezeiten bei Erzeuger oder Verbraucher, etc. Bis hin zu hinterlegter Kalkulation, das den Endpreis des Produktes ermittelt und somit steuernd auf die Nachfrage einwirkt.
 Hierdurch könnten Aussagen zu Stoßzeiten (Gastronomie, Einzelhandel, Energie, Webserver, ...) getroffen werden. 
 
 Für eine solche feingliedrige Simulation ist eine eigene Implementierung der Queue oder evt. sogar des Threading denkbar, um an beliebigen Stellen den Zustand des Systems abfegen und analysieren zu können.
+
+Ebenfalls kann in einer weiteren Arbeit untersucht werden, wie häufig ein Fehler, wie er in Abschnitt~\myref{sub:korrektes_logging} beschrieben ist vorkommt. Die Anwendung könnte dann bei Bedarf entlang der beschriebenen Lösungskonzepte erweitert bzw. neu implementiert werden.
 % subsection ausblick (end)
 
 % section fazit_ausblick (end)
